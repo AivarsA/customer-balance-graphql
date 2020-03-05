@@ -1,0 +1,27 @@
+
+# ScandiPWA - Progressive Web App for Magento
+#
+# Copyright © Scandiweb, Inc. All rights reserved.
+# See LICENSE for license details.
+#
+# @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+# @package scandipwa/gift-card-graphql
+# @link https://github.com/scandipwa/gift-card-graphql
+#
+# Copyright © Magento, Inc. All rights reserved.
+# See COPYING.txt for license details.
+
+type Mutation {
+    applyStoreCredit(guestCartId: String): Query @resolver(class:"\\ScandiPWA\\CustomerBalanceGraphQl\\Model\\Resolver\\ApplyStoreCredit")
+    removeStoreCredit(guestCartId: String): Query @resolver(class:"\\ScandiPWA\\CustomerBalanceGraphQl\\Model\\Resolver\\RemoveStoreCredit")
+}
+
+extend interface TotalsObject {
+    applied_store_credit: AppliedStoreCredit @resolver(class: "\\ScandiPWA\\CustomerBalanceGraphQl\\Model\\Resolver\\GetAppliedStoreCreditFromCart") @doc(description: "Contains store credit information applied on the cart")
+}
+
+type AppliedStoreCredit @doc(description: "Applied and current balance") {
+    enabled: Boolean @doc(description: "Indicates whether store credits are enabled. If the feature is disabled, then the current balance will not be returned")
+    current_balance: Money @doc(description: "Current balance remaining on store credit")
+    applied_balance: Money @doc(description: "Applied store credit balance to the current cart")
+}
